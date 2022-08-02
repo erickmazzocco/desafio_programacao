@@ -31,14 +31,25 @@ namespace DesafioProgramacao.Controllers
             _produtoRepository = produtoRepository;
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProdutoDto>>> GetAll()
         {
-            var produtos = await _produtoRepository.GetAllAsync();
-            var produtosDto = _mapper.Map<IEnumerable<ProdutoDto>>(produtos);
+            try
+            {
+                var produtos = await _produtoRepository.GetAllAsync();
+                var produtosDto = _mapper.Map<IEnumerable<ProdutoDto>>(produtos);
 
-            _logger.LogInformation($"{DateTime.UtcNow.ToString("hh:mm:ss")}: Retrieved {produtos.Count()} products");
-            return Ok(produtosDto);
+                _logger.LogInformation($"{DateTime.UtcNow.ToString("hh:mm:ss")}: Retrieved {produtos.Count()} products");
+                return Ok(produtosDto);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"{DateTime.UtcNow.ToString("hh:mm:ss")}: Error: " + ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            
         }
 
         [HttpGet("{id}")]
