@@ -1,4 +1,9 @@
+using AutoMapper;
 using DesafioProgramacao.Data;
+using DesafioProgramacao.Dtos;
+using DesafioProgramacao.Entities;
+using DesafioProgramacao.Repositories;
+using DesafioProgramacao.Repositories.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -30,9 +35,18 @@ namespace DesafioProgramacao
         {
             services.AddDbContext<DataContext>(
                 options => options.UseNpgsql(
-                    Configuration.GetConnectionString("DefaultConnection")));            
+                    Configuration.GetConnectionString("DefaultConnection")));
+
+
+            var configuration = new MapperConfiguration(cfg => cfg.AddProfile<ProfileDto>());
+            services.AddSingleton(configuration.CreateMapper());
+
+            services.AddScoped<IDataContext>(provider => provider.GetService<DataContext>());
+            services.AddScoped<IProdutoRepository, ProdutoRepository>();
+            services.AddScoped<IFornecedorRepository, FornecedorRepository>();
 
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DesafioProgramacao", Version = "v1" });

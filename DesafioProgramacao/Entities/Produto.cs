@@ -12,7 +12,5 @@ namespace DesafioProgramacao.Entities
 
         public int FornecedorId { get; set; }
         public Fornecedor Fornecedor { get; set; }
-
-
     }
 }
