@@ -13,17 +13,14 @@ namespace DesafioProgramacao.Controllers
     public class FornecedorController : ControllerBase
     {
         private readonly IFornecedorRepository _fornecedorRepository;
-        private readonly IMapper _mapper;
-        private readonly ILogger<FornecedorController> _logger;
+        private readonly IMapper _mapper;        
 
         public FornecedorController(
             IFornecedorRepository fornecedorRepository, 
-            IMapper mapper,
-            ILogger<FornecedorController> logger)
+            IMapper mapper)
         {
             _fornecedorRepository = fornecedorRepository;
-            _mapper = mapper;
-            _logger = logger;
+            _mapper = mapper;            
         }
 
         [HttpPost]

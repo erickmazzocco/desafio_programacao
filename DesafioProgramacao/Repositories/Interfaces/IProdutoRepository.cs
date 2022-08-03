@@ -8,8 +8,8 @@ namespace DesafioProgramacao.Repositories.Interfaces
     {
         Task<Produto> GetAsync(int id);
         Task<IEnumerable<Produto>> GetAllAsync();
-        Task CreateAsync(Produto p);
-        Task UpdateAsync(Produto p);
+        Task<Produto> CreateAsync(Produto p);
+        Task<Produto> UpdateAsync(Produto p);
         Task DeleteAsync(int id);
     }
 }

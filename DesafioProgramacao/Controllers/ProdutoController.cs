@@ -17,18 +17,21 @@ namespace DesafioProgramacao.Controllers
     public class ProdutoController : ControllerBase
     {
         private readonly IProdutoRepository _produtoRepository;
+        private readonly IFornecedorRepository _fornecedorRepository;
         private readonly ILogger<ProdutoController> _logger;
         private readonly IMapper _mapper;
 
         public ProdutoController(
             ILogger<ProdutoController> logger,
             IMapper mapper,
-            IProdutoRepository produtoRepository
+            IProdutoRepository produtoRepository,
+            IFornecedorRepository fornecedorRepository
             )
         {
             _logger = logger;
             _mapper = mapper;
             _produtoRepository = produtoRepository;
+            _fornecedorRepository = fornecedorRepository;
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -40,50 +43,114 @@ namespace DesafioProgramacao.Controllers
             {
                 var produtos = await _produtoRepository.GetAllAsync();
                 var produtosDto = _mapper.Map<IEnumerable<ProdutoDto>>(produtos);
-
-                _logger.LogInformation($"{DateTime.UtcNow.ToString("hh:mm:ss")}: Retrieved {produtos.Count()} products");
+                
                 return Ok(produtosDto);
             }
             catch (Exception ex)
             {
-                _logger.LogInformation($"{DateTime.UtcNow.ToString("hh:mm:ss")}: Error: " + ex.ToString());
+                _logger.LogError($"{DateTime.UtcNow.ToString("hh:mm:ss")}: Erro: {ex}");
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            
+        }
+        
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]        
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Produto>> Get(int id)
+        {
+            try
+            {
+                var produto = await _produtoRepository.GetAsync(id);
+                if (produto == null)
+                    return NotFound();
+
+                return Ok(produto);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{DateTime.UtcNow.ToString("hh:mm:ss")}: Erro: {ex}");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
             
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Produto>> Get(int id)
-        {
-            var produto = await _produtoRepository.GetAsync(id);
-            if (produto == null)
-                return NotFound();
-
-            return produto;
-        }
-
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost]
-        public async Task<ActionResult> Create([FromBody] ProdutoCreateDto produtoDto)
+        public async Task<ActionResult<ProdutoDto>> Create([FromBody] ProdutoCreateDto produtoDto)
         {
-            var produto = _mapper.Map<Produto>(produtoDto);
-            await _produtoRepository.CreateAsync(produto);
-            return Ok();
+            try
+            {
+                if (_fornecedorRepository.GetAsync(produtoDto.FornecedorId) == null)
+                    return BadRequest();
+
+                if (produtoDto.DataFabricacao > produtoDto.DataValidade)
+                    return BadRequest("Data de fabricação não pode ser maior que a data de validade");
+
+                var produto = _mapper.Map<Produto>(produtoDto);
+                var result = await _produtoRepository.CreateAsync(produto);
+
+                var resultDto = _mapper.Map<ProdutoDto>(result);
+
+                return Created(string.Empty, resultDto);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{DateTime.UtcNow.ToString("hh:mm:ss")}: Erro: {ex}");
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPut]
-        public async Task<ActionResult> Update([FromBody] ProdutoCreateDto produtoDto)
+        public async Task<ActionResult<ProdutoDto>> Update([FromBody] ProdutoUpdateDto produtoUpdateDto)
         {
+            try
+            {
+                if (produtoUpdateDto.DataFabricacao > produtoUpdateDto.DataValidade)
+                    return BadRequest("Data de fabricação não pode ser maior que a data de validade");
 
-            var produto = _mapper.Map<Produto>(produtoDto);
-            await _produtoRepository.UpdateAsync(produto);
-            return Ok();
+                if (await _produtoRepository.GetAsync(produtoUpdateDto.Id) == null)
+                    return NotFound();
+
+                var produto = _mapper.Map<Produto>(produtoUpdateDto);                
+
+                var newProduto = await _produtoRepository.UpdateAsync(produto);
+                var newProdutoDto = _mapper.Map<ProdutoDto>(newProduto);
+                return Ok(newProdutoDto);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{DateTime.UtcNow.ToString("hh:mm:ss")}: Erro: {ex}");
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            await _produtoRepository.DeleteAsync(id);
-            return Ok();
+            try
+            {
+                if (await _produtoRepository.GetAsync(id) == null)
+                    return NotFound();
+
+                await _produtoRepository.DeleteAsync(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{DateTime.UtcNow.ToString("hh:mm:ss")}: Erro: {ex}");
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
     }
 }

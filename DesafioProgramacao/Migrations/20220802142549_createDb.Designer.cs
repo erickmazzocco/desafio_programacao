@@ -11,7 +11,7 @@ namespace DesafioProgramacao.Migrations
 {
     [DbContext(typeof(DataContext))]
     [Migration("20220802142549_createDb")]
-    partial class createDb
+    partial class CreateDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

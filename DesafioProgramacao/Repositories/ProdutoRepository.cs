@@ -17,17 +17,18 @@ namespace DesafioProgramacao.Repositories
             _context = context;
         }
 
-        public async Task CreateAsync(Produto p)
+        public async Task<Produto> CreateAsync(Produto p)
         {
             _context.Produtos.Add(p);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();            
+            return p;
         }
 
         public async Task DeleteAsync(int id)
         {
             var produto = await _context.Produtos.FindAsync(id);
-            _context.Produtos.Remove(produto);
-            await _context.SaveChangesAsync();
+            produto.Status = false;
+            await _context.SaveChangesAsync();            
         }
 
         public async Task<IEnumerable<Produto>> GetAllAsync()
@@ -41,10 +42,11 @@ namespace DesafioProgramacao.Repositories
 
         }
 
-        public async Task UpdateAsync(Produto p)
+        public async Task<Produto> UpdateAsync(Produto p)
         {
             _context.Produtos.Update(p);
             await _context.SaveChangesAsync();
+            return p;
         }
     }
 }

@@ -2,6 +2,7 @@
 using DesafioProgramacao.Data;
 using DesafioProgramacao.Entities;
 using DesafioProgramacao.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -23,24 +24,27 @@ namespace DesafioProgramacao.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new System.NotImplementedException();
+            var f = await _context.Fornecedores.FindAsync(id);
+            _context.Fornecedores.Remove(f);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<Fornecedor>> GetAllAsync()
+        public async Task<IEnumerable<Fornecedor>> GetAllAsync()
         {
-            throw new System.NotImplementedException();
+            return await _context.Fornecedores.ToListAsync();
         }
 
-        public Task<Fornecedor> GetAsync(int id)
+        public async Task<Fornecedor> GetAsync(int id)
         {
-            throw new System.NotImplementedException();
+            return await _context.Fornecedores.FindAsync(id);
         }
 
-        public Task UpdateAsync(Fornecedor f)
+        public async Task UpdateAsync(Fornecedor f)
         {
-            throw new System.NotImplementedException();
+            _context.Fornecedores.Update(f);
+            await _context.SaveChangesAsync();
         }
     }
 }
