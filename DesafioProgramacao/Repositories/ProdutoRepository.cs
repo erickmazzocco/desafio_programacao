@@ -33,7 +33,7 @@ namespace DesafioProgramacao.Repositories
 
         public async Task<IEnumerable<Produto>> GetAllAsync()
         {
-            return await _context.Produtos.ToListAsync();
+            return await _context.Produtos.Include(p => p.Fornecedor).ToListAsync();
         }
 
         public async Task<Produto> GetAsync(int id)

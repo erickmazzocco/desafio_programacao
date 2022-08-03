@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DesafioProgramacao.Entities;
+using System;
 
 namespace DesafioProgramacao.Dtos
 {
@@ -9,8 +10,8 @@ namespace DesafioProgramacao.Dtos
         public bool Status { get; set; }
         public DateTime DataFabricacao { get; set; }
         public DateTime DataValidade { get; set; }
-
-        public int FornecedorId { get; set; }
+        
+        public Fornecedor Fornecedor { get; set; }
     }
 
     public class ProdutoCreateDto

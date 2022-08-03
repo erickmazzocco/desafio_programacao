@@ -48,7 +48,7 @@ namespace DesafioProgramacao.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{DateTime.UtcNow.ToString("hh:mm:ss")}: Erro: {ex}");
+                _logger.LogError($"{DateTime.UtcNow:hh:mm:ss}: Erro: {ex}");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
             
@@ -64,19 +64,19 @@ namespace DesafioProgramacao.Controllers
             {
                 var produto = await _produtoRepository.GetAsync(id);
                 if (produto == null)
-                    return NotFound();
+                    return NotFound("Produto não encontrado");
 
                 return Ok(produto);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{DateTime.UtcNow.ToString("hh:mm:ss")}: Erro: {ex}");
+                _logger.LogError($"{DateTime.UtcNow:hh:mm:ss}: Erro: {ex}");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
             
         }
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost]
@@ -84,8 +84,8 @@ namespace DesafioProgramacao.Controllers
         {
             try
             {
-                if (_fornecedorRepository.GetAsync(produtoDto.FornecedorId) == null)
-                    return BadRequest();
+                if (await _fornecedorRepository.GetAsync(produtoDto.FornecedorId) == null)
+                    return BadRequest("Fornecedor não encontrado");
 
                 if (produtoDto.DataFabricacao > produtoDto.DataValidade)
                     return BadRequest("Data de fabricação não pode ser maior que a data de validade");
@@ -99,7 +99,7 @@ namespace DesafioProgramacao.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{DateTime.UtcNow.ToString("hh:mm:ss")}: Erro: {ex}");
+                _logger.LogError($"{DateTime.UtcNow:hh:mm:ss}: Erro: {ex}");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
@@ -117,7 +117,7 @@ namespace DesafioProgramacao.Controllers
                     return BadRequest("Data de fabricação não pode ser maior que a data de validade");
 
                 if (await _produtoRepository.GetAsync(produtoUpdateDto.Id) == null)
-                    return NotFound();
+                    return NotFound("Produto não encontrado");
 
                 var produto = _mapper.Map<Produto>(produtoUpdateDto);                
 
@@ -127,7 +127,7 @@ namespace DesafioProgramacao.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{DateTime.UtcNow.ToString("hh:mm:ss")}: Erro: {ex}");
+                _logger.LogError($"{DateTime.UtcNow:hh:mm:ss}: Erro: {ex}");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
@@ -141,14 +141,14 @@ namespace DesafioProgramacao.Controllers
             try
             {
                 if (await _produtoRepository.GetAsync(id) == null)
-                    return NotFound();
+                    return NotFound("Produto não encontrado");
 
                 await _produtoRepository.DeleteAsync(id);
                 return Ok();
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{DateTime.UtcNow.ToString("hh:mm:ss")}: Erro: {ex}");
+                _logger.LogError($"{DateTime.UtcNow:hh:mm:ss}: Erro: {ex}");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
