@@ -1,4 +1,5 @@
-﻿using DesafioProgramacao.Domain.Entities;
+﻿using DesafioProgramacao.CrossCutting.Helpers;
+using DesafioProgramacao.Domain.Entities;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,8 @@ namespace DesafioProgramacao.Service.Validators
 
             RuleFor(c => c.Cnpj)
                 .NotEmpty().WithMessage("Cnpj can not be empty")
-                .NotNull().WithMessage("Cnpj can not be empty");
+                .NotNull().WithMessage("Cnpj can not be empty")
+                .Must((c, cnpj) => { return CnpjHelper.IsCnpj(cnpj); }).WithMessage("Cnpj is in a unexpected format");                
         }
     }
 }

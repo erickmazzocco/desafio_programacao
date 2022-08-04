@@ -15,15 +15,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.1 - Data", "4.1 - Data", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.2 - CrossCutting", "4.2 - CrossCutting", "{CBA7F564-2240-40A1-95B6-0E0405394105}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesafioProgramacao.Application", "DesafioProgramacao.Application\DesafioProgramacao.Application.csproj", "{62C8D7A7-D040-41D1-9837-23F9ECA2B78E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DesafioProgramacao.Application", "DesafioProgramacao.Application\DesafioProgramacao.Application.csproj", "{62C8D7A7-D040-41D1-9837-23F9ECA2B78E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesafioProgramacao.Domain", "DesafioProgramacao.Domain\DesafioProgramacao.Domain.csproj", "{C22AFE4C-7B11-448C-ABD6-A5D1FA6906B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DesafioProgramacao.Domain", "DesafioProgramacao.Domain\DesafioProgramacao.Domain.csproj", "{C22AFE4C-7B11-448C-ABD6-A5D1FA6906B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesafioProgramacao.Service", "DesafioProgramacao.Service\DesafioProgramacao.Service.csproj", "{0EEBD412-1424-4995-9FE8-47BF934B77A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DesafioProgramacao.Service", "DesafioProgramacao.Service\DesafioProgramacao.Service.csproj", "{0EEBD412-1424-4995-9FE8-47BF934B77A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesafioProgramacao.Infra.Data", "DesafioProgramacao.Infra.Data\DesafioProgramacao.Infra.Data.csproj", "{BA207594-BBCB-491E-BEF8-5B7D3B47ECB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DesafioProgramacao.Infra.Data", "DesafioProgramacao.Infra.Data\DesafioProgramacao.Infra.Data.csproj", "{BA207594-BBCB-491E-BEF8-5B7D3B47ECB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesafioProgramacao.CrossCutting", "DesafioProgramacao.CrossCutting\DesafioProgramacao.CrossCutting.csproj", "{F16C9BF7-086C-4A58-99E2-826C507E8327}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DesafioProgramacao.CrossCutting", "DesafioProgramacao.CrossCutting\DesafioProgramacao.CrossCutting.csproj", "{F16C9BF7-086C-4A58-99E2-826C507E8327}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 - Tests", "5 - Tests", "{D73F551E-AA3C-4DCD-9B38-6ACD3AE80888}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesafioProgramacao.Tests", "DesafioProgramacao.Tests\DesafioProgramacao.Tests.csproj", "{138DFC53-9F7B-480B-AED5-645C1B690105}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +55,10 @@ Global
 		{F16C9BF7-086C-4A58-99E2-826C507E8327}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F16C9BF7-086C-4A58-99E2-826C507E8327}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F16C9BF7-086C-4A58-99E2-826C507E8327}.Release|Any CPU.Build.0 = Release|Any CPU
+		{138DFC53-9F7B-480B-AED5-645C1B690105}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{138DFC53-9F7B-480B-AED5-645C1B690105}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{138DFC53-9F7B-480B-AED5-645C1B690105}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{138DFC53-9F7B-480B-AED5-645C1B690105}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -63,6 +71,7 @@ Global
 		{0EEBD412-1424-4995-9FE8-47BF934B77A2} = {47C4AE9B-FE8D-409B-8FA6-86B4B87CBDD1}
 		{BA207594-BBCB-491E-BEF8-5B7D3B47ECB9} = {189DE135-F99A-442C-84B4-BA92C9452BAA}
 		{F16C9BF7-086C-4A58-99E2-826C507E8327} = {CBA7F564-2240-40A1-95B6-0E0405394105}
+		{138DFC53-9F7B-480B-AED5-645C1B690105} = {D73F551E-AA3C-4DCD-9B38-6ACD3AE80888}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {52E45B2F-4B61-4DFE-8066-FCBF335B5E03}

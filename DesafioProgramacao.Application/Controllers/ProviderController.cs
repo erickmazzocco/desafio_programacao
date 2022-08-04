@@ -42,7 +42,7 @@ namespace DesafioProgramacao.Application.Controllers
                 var result = await _baseService.GetById<ProviderDto>(id);
 
                 if (result == null)
-                    NotFound();
+                    return NotFound();
 
                 return Ok(result);
             }

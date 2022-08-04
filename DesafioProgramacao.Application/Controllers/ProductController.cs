@@ -44,7 +44,7 @@ namespace DesafioProgramacao.Application.Controllers
                 var result = await _baseService.GetById<ProductDto>(id);
 
                 if (result == null)
-                    NotFound();
+                    return NotFound();
 
                 return Ok(result);
             }
@@ -83,7 +83,7 @@ namespace DesafioProgramacao.Application.Controllers
             {
                 if (product == null) return BadRequest();
 
-                var result = await _baseService.Add<ProductCreateModel, ProductDto, ProductValidator>(product);
+                var result = await _baseService.Add<ProductCreateModel, ProductDto, ProductValidator>(product);                
 
                 return Ok(result);
             }
