@@ -1,5 +1,6 @@
 using DesafioProgramacao.Application.Controllers;
 using DesafioProgramacao.Application.Models;
+using DesafioProgramacao.CrossCutting.Pagination;
 using DesafioProgramacao.Domain.Dtos;
 using DesafioProgramacao.Domain.Entities;
 using DesafioProgramacao.Domain.Interfaces;
@@ -21,19 +22,27 @@ namespace DesafioProgramacao.Tests
     public class ProviderControllerTests
     {
         private readonly Mock<IBaseService<Provider>> _mockRepo = new();
-        private readonly Mock<ILogger<ProviderController>> _mockLogger = new();        
+        private readonly Mock<ILogger<ProviderController>> _mockLogger = new();
+        private readonly PaginationFilter _paginationFilter;
 
         public ProviderControllerTests()
         {
+            _paginationFilter = new PaginationFilter()
+            {
+                Description = "",
+                PageNumber = 1,
+                PageSize = 1000,
+                OrderBy = "asc"
+            };
         }
 
         [Fact]
         public async Task Get_AllProviders_Returns3Items()
         {
-            _mockRepo.Setup(repo => repo.Get<ProviderDto>()).ReturnsAsync(GetProviderDtosTests());
+            _mockRepo.Setup(repo => repo.Get<ProviderDto>(It.IsAny<PaginationFilter>())).ReturnsAsync(GetProviderDtosTests());
             var providerController = new ProviderController(_mockRepo.Object, _mockLogger.Object);
 
-            var result = await providerController.Get();
+            var result = await providerController.Get(_paginationFilter);
 
             var providers = ((OkObjectResult)result).Value as IEnumerable<ProviderDto>;            
             
@@ -44,10 +53,10 @@ namespace DesafioProgramacao.Tests
         [Fact]
         public async Task Get_AllProviders_ShouldBeOkResult()
         {
-            _mockRepo.Setup(repo => repo.Get<ProviderDto>()).ReturnsAsync(GetProviderDtosTests());
+            _mockRepo.Setup(repo => repo.Get<ProviderDto>(new PaginationFilter())).ReturnsAsync(GetProviderDtosTests());
             var providerController = new ProviderController(_mockRepo.Object, _mockLogger.Object);
 
-            var result = await providerController.Get();            
+            var result = await providerController.Get(new PaginationFilter());            
 
             result.Should().BeEquivalentTo(new OkResult());            
         }
@@ -231,30 +240,32 @@ namespace DesafioProgramacao.Tests
         }
 
 
-        private IEnumerable<ProviderDto> GetProviderDtosTests()
+        private static IEnumerable<ProviderDto> GetProviderDtosTests()
         {
-            var providers = new List<ProviderDto>();
-            providers.Add(new ProviderDto()
+            var providers = new List<ProviderDto>
             {
-                Id = 1,
-                Status = true,
-                Description = "Test",
-                Cnpj = "0005"
-            });
-            providers.Add(new ProviderDto()
-            {
-                Id = 2,
-                Status = true,
-                Description = "Test",
-                Cnpj = "0005"
-            });
-            providers.Add(new ProviderDto()
-            {
-                Id = 3,
-                Status = true,
-                Description = "Test",
-                Cnpj = "0005"
-            });
+                new ProviderDto()
+                {
+                    Id = 1,
+                    Status = true,
+                    Description = "Test",
+                    Cnpj = "0005"
+                },
+                new ProviderDto()
+                {
+                    Id = 2,
+                    Status = true,
+                    Description = "Test",
+                    Cnpj = "0005"
+                },
+                new ProviderDto()
+                {
+                    Id = 3,
+                    Status = true,
+                    Description = "Test",
+                    Cnpj = "0005"
+                }
+            };
 
             return providers;
         }

@@ -1,5 +1,6 @@
 ﻿using DesafioProgramacao.Application.Controllers;
 using DesafioProgramacao.Application.Models;
+using DesafioProgramacao.CrossCutting.Pagination;
 using DesafioProgramacao.Domain.Dtos;
 using DesafioProgramacao.Domain.Entities;
 using DesafioProgramacao.Domain.Interfaces;
@@ -22,18 +23,26 @@ namespace DesafioProgramacao.Tests
     {
         private readonly Mock<IBaseService<Product>> _mockRepo = new();
         private readonly Mock<ILogger<ProductController>> _mockLogger = new();
+        private readonly PaginationFilter _paginationFilter;        
 
         public ProductControllerTests()
         {
+            _paginationFilter = new PaginationFilter()
+            {
+                Description = "",
+                PageNumber = 1,
+                PageSize = 1000,
+                OrderBy = "asc"
+            };
         }
 
         [Fact]
         public async Task Get_AllProducts_Returns3Items()
         {
-            _mockRepo.Setup(repo => repo.Get<ProductDto>()).ReturnsAsync(GetProductDtosTests());
+            _mockRepo.Setup(repo => repo.Get<ProductDto>(It.IsAny<PaginationFilter>())).ReturnsAsync(GetProductDtosTests());
             var productController = new ProductController(_mockRepo.Object, _mockLogger.Object);
 
-            var result = await productController.Get();
+            var result = await productController.Get(_paginationFilter);
 
             var providers = ((OkObjectResult)result).Value as IEnumerable<ProductDto>;
 
@@ -207,36 +216,38 @@ namespace DesafioProgramacao.Tests
             result.Should().BeEquivalentTo(new OkObjectResult(productDto));
         }
 
-        private IEnumerable<ProductDto> GetProductDtosTests()
+        private static IEnumerable<ProductDto> GetProductDtosTests()
         {
-            var providers = new List<ProductDto>();
-            providers.Add(new ProductDto()
+            var providers = new List<ProductDto>
             {
-                Id = 1,
-                Status = true,
-                Description = "Test",
-                ProviderId = 1,
-                ManufacturingDate = DateTime.Now,
-                ValidationDate = DateTime.Now,
-            });
-            providers.Add(new ProductDto()
-            {
-                Id = 2,
-                Status = true,
-                Description = "Test",
-                ProviderId = 1,
-                ManufacturingDate = DateTime.Now,
-                ValidationDate = DateTime.Now,
-            });
-            providers.Add(new ProductDto()
-            {
-                Id = 3,
-                Status = true,
-                Description = "Test",
-                ProviderId = 1,
-                ManufacturingDate = DateTime.Now,
-                ValidationDate = DateTime.Now,
-            });
+                new ProductDto()
+                {
+                    Id = 1,
+                    Status = true,
+                    Description = "Test",
+                    ProviderId = 1,
+                    ManufacturingDate = DateTime.Now,
+                    ValidationDate = DateTime.Now,
+                },
+                new ProductDto()
+                {
+                    Id = 2,
+                    Status = true,
+                    Description = "Test",
+                    ProviderId = 1,
+                    ManufacturingDate = DateTime.Now,
+                    ValidationDate = DateTime.Now,
+                },
+                new ProductDto()
+                {
+                    Id = 3,
+                    Status = true,
+                    Description = "Test",
+                    ProviderId = 1,
+                    ManufacturingDate = DateTime.Now,
+                    ValidationDate = DateTime.Now,
+                }
+            };
 
             return providers;
         }

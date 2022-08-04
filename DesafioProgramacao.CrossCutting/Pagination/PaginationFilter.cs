@@ -4,6 +4,8 @@
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
+        public string Description { get; set; }
+        public string OrderBy { get; set; } = "asc";
 
         public PaginationFilter()
         {
@@ -18,7 +20,5 @@
         }
 
         public int CalcSkip() => (PageNumber - 1) * PageSize;
-
-        public string Description { get; set; }
     }
 }

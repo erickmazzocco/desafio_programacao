@@ -11,7 +11,7 @@ namespace DesafioProgramacao.Infra.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
     [Migration("20220803184155_init")]
-    partial class init
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

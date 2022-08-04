@@ -37,7 +37,9 @@ namespace DesafioProgramacao.Infra.Data.Repository
             if (!string.IsNullOrEmpty(pagination.Description))
                 obj = obj.Where(o => o.Description.Contains(pagination.Description));
 
-            return await obj
+            obj = pagination.OrderBy == "desc" ? obj.OrderByDescending(o => o.Id) : obj.OrderBy(o => o.Id);
+
+            return await obj                
                 .Skip(pagination.CalcSkip())
                 .Take(pagination.PageSize)
                 .ToListAsync();

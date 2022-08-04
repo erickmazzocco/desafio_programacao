@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DesafioProgramacao.CrossCutting.Helpers
+﻿namespace DesafioProgramacao.CrossCutting.Helpers
 {
     public static class CnpjHelper
     {
@@ -20,7 +14,7 @@ namespace DesafioProgramacao.CrossCutting.Helpers
 			cnpj = cnpj.Replace(".", "").Replace("-", "").Replace("/", "");
 			if (cnpj.Length != 14)
 				return false;
-			tempCnpj = cnpj.Substring(0, 12);
+			tempCnpj = cnpj[..12];
 			soma = 0;
 			for (int i = 0; i < 12; i++)
 				soma += int.Parse(tempCnpj[i].ToString()) * multiplicador1[i];
