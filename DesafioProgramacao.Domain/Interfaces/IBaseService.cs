@@ -1,4 +1,5 @@
-﻿using DesafioProgramacao.Domain.Entities;
+﻿using DesafioProgramacao.CrossCutting.Pagination;
+using DesafioProgramacao.Domain.Entities;
 using FluentValidation;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace DesafioProgramacao.Domain.Interfaces
 
         Task<bool> Delete(int id, bool soft = true);        
 
-        Task<IEnumerable<TOutputModel>> Get<TOutputModel>() where TOutputModel : class;
+        Task<IEnumerable<TOutputModel>> Get<TOutputModel>(PaginationFilter pagination) where TOutputModel : class;
 
         Task<TOutputModel> GetById<TOutputModel>(int id) where TOutputModel : class;        
 

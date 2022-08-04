@@ -9,8 +9,7 @@ namespace DesafioProgramacao.Domain.Entities
 {
     public class Product : BaseEntity
     {
-        [Required]
-        public string Description { get; set; }        
+        [Required]                
 
         public DateTime ManufacturingDate { get; set; }
 

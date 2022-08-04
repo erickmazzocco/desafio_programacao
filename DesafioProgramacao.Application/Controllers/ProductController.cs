@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DesafioProgramacao.Application.Models;
+using DesafioProgramacao.CrossCutting.Pagination;
 using DesafioProgramacao.Domain.Dtos;
 using DesafioProgramacao.Domain.Entities;
 using DesafioProgramacao.Domain.Interfaces;
@@ -58,11 +59,11 @@ namespace DesafioProgramacao.Application.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProductDto>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] PaginationFilter filter)
         {
             try
             {
-                var result = await _baseService.Get<ProductDto>();
+                var result = await _baseService.Get<ProductDto>(filter);
 
                 return Ok(result);
             }

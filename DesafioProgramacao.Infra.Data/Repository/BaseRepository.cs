@@ -1,4 +1,5 @@
-﻿using DesafioProgramacao.Domain.Entities;
+﻿using DesafioProgramacao.CrossCutting.Pagination;
+using DesafioProgramacao.Domain.Entities;
 using DesafioProgramacao.Domain.Interfaces;
 using DesafioProgramacao.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
@@ -29,8 +30,19 @@ namespace DesafioProgramacao.Infra.Data.Repository
             return true;
         }
 
-        public async Task<IEnumerable<TEntity>> Get() =>
-            await _context.Set<TEntity>().ToListAsync();
+        public async Task<IEnumerable<TEntity>> Get(PaginationFilter pagination)
+        {
+            var obj = _context.Set<TEntity>().AsQueryable();
+
+            if (!string.IsNullOrEmpty(pagination.Description))
+                obj = obj.Where(o => o.Description.Contains(pagination.Description));
+
+            return await obj
+                .Skip(pagination.CalcSkip())
+                .Take(pagination.PageSize)
+                .ToListAsync();
+        }
+            
 
         public async Task<TEntity> Get(int id) =>
             await _context.Set<TEntity>().FindAsync(id);

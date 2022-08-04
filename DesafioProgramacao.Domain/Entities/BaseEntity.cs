@@ -14,5 +14,7 @@ namespace DesafioProgramacao.Domain.Entities
         public virtual int Id { get; set; }
 
         public bool Status { get; set; }
+
+        public string Description { get; set; }
     }
 }

@@ -1,8 +1,6 @@
-﻿using DesafioProgramacao.Domain.Entities;
-using System;
+﻿using DesafioProgramacao.CrossCutting.Pagination;
+using DesafioProgramacao.Domain.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DesafioProgramacao.Domain.Interfaces
@@ -12,12 +10,12 @@ namespace DesafioProgramacao.Domain.Interfaces
         Task<T> Insert(T obj);
 
         Task<T> Update(T obj);
-
+        
         Task<bool> Delete(int id);
 
         Task<bool> SoftDelete(int id);
 
-        Task<IEnumerable<T>> Get();
+        Task<IEnumerable<T>> Get(PaginationFilter pagination);
 
         Task<T> Get(int id);
     }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DesafioProgramacao.CrossCutting.Pagination;
 using DesafioProgramacao.Domain.Entities;
 using DesafioProgramacao.Domain.Interfaces;
 using FluentValidation;
@@ -42,9 +43,9 @@ namespace DesafioProgramacao.Service.Services
         public async Task<bool> Delete(int id, bool soft = true) => 
             soft ? await _baseRepository.SoftDelete(id) : await _baseRepository.Delete(id);
 
-        public async Task<IEnumerable<TOutputModel>> Get<TOutputModel>() where TOutputModel : class
+        public async Task<IEnumerable<TOutputModel>> Get<TOutputModel>(PaginationFilter pagination) where TOutputModel : class
         {
-            var entities = await _baseRepository.Get();
+            var entities = await _baseRepository.Get(pagination);
 
             var outputModels = entities.Select(s => _mapper.Map<TOutputModel>(s));
 
