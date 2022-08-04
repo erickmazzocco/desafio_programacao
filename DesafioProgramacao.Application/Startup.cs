@@ -46,16 +46,7 @@ namespace DesafioProgramacao.Application
             services.AddScoped<IBaseRepository<Provider>, BaseRepository<Provider>>();
             services.AddScoped<IBaseService<Provider>, BaseService<Provider>>();
 
-            services.AddSingleton(new MapperConfiguration(config =>
-            {
-                config.CreateMap<ProductCreateModel, Product>();
-                config.CreateMap<ProductUpdateModel, Product>();
-                config.CreateMap<Product, ProductDto>();
-
-                config.CreateMap<ProviderCreateModel, Provider>();
-                config.CreateMap<ProviderUpdateModel, Provider>();
-                config.CreateMap<Provider, ProviderDto>();                
-            }).CreateMapper());
+            services.AddSingleton(new MapperConfiguration(cfg => { cfg.AddProfile(new Profiles()); }).CreateMapper());
 
             services.AddSwaggerGen(c =>
             {
